@@ -6,31 +6,30 @@
 
 ### 步骤：
 
-1. **下载 Qt 官方在线安装器**  
-    前往：[https://www.qt.io/download](https://www.qt.io/download)  
-    下载 Qt Online Installer（适用于 Windows、Linux、macOS）
-    
-下载的“qt-unified-windows-x64-4.5.2-online.exe”目录进入CMD，然后运行下面的命令：  ./qt-unified-windows-x64-X.X.X-online.exe --mirror https://mirror.nju.edu.cn/qt
+1. **下载 Qt 官方在线安装器**
+   前往：[https://www.qt.io/download](https://www.qt.io/download)
+   下载 Qt Online Installer（适用于 Windows、Linux、macOS）
+
+下载的“qt-online-installer-windows-x64-4.10.0.exe”目录进入CMD，然后运行下面的命令：  ./qt-online-installer-windows-x64-4.10.0.exe --mirror https://mirrors.aliyun.com/qt
+
 ## ✅ 方法二：手动下载离线安装包（如 Qt 5.15）
 
 清华镜像也提供 Qt 离线安装包，适用于没有在线安装器或不想联网安装的情况：
 
 - 浏览地址（清华镜像站）：
-    
+
+  ```
+  https://mirrors.tuna.tsinghua.edu.cn/qt/
+  ```
+
+  示例：
+
+  - Qt 5.15.2 安装器：
+
     ```
-    https://mirrors.tuna.tsinghua.edu.cn/qt/
+    https://mirrors.tuna.tsinghua.edu.cn/qt/archive/qt/5.15/5.15.2/
     ```
-    
-    示例：
-    
-    - Qt 5.15.2 安装器：
-        
-        ```
-        https://mirrors.tuna.tsinghua.edu.cn/qt/archive/qt/5.15/5.15.2/
-        ```
-        
 - 下载 `.exe`（Windows）或 `.run`（Linux）安装器即可离线安装。
-    
 
 ---
 
@@ -42,11 +41,11 @@
 
 ## 附：常见国内镜像源
 
-|镜像站|地址|
-|---|---|
-|清华大学|[https://mirrors.tuna.tsinghua.edu.cn/qt/](https://mirrors.tuna.tsinghua.edu.cn/qt/)|
-|阿里云（旧）|[https://mirrors.aliyun.com/qt/](https://mirrors.aliyun.com/qt/)|
-|中科大|[https://mirrors.ustc.edu.cn/qtproject/](https://mirrors.ustc.edu.cn/qtproject/)|
+| 镜像站       | 地址                                                                              |
+| ------------ | --------------------------------------------------------------------------------- |
+| 清华大学     | [https://mirrors.tuna.tsinghua.edu.cn/qt/](https://mirrors.tuna.tsinghua.edu.cn/qt/) |
+| 阿里云（旧） | [https://mirrors.aliyun.com/qt/](https://mirrors.aliyun.com/qt/)                     |
+| 中科大       | [https://mirrors.ustc.edu.cn/qtproject/](https://mirrors.ustc.edu.cn/qtproject/)     |
 
 ---
 
