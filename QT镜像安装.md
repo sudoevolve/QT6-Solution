@@ -10,32 +10,7 @@
     前往：[https://www.qt.io/download](https://www.qt.io/download)  
     下载 Qt Online Installer（适用于 Windows、Linux、macOS）
     
-2. **启动安装器，添加国内镜像源**  
-    启动后，登录 Qt 账号（或注册一个免费账号）。
-    
-3. **修改源配置：**
-    
-    在安装器登录后，进入选择组件页面之前，按下：
-    
-    ```
-    Ctrl + Shift + R
-    ```
-    
-    会弹出一个“设置存储库地址”的对话框。
-    
-4. **将地址替换为：**
-    
-    ```
-    https://mirrors.tuna.tsinghua.edu.cn/qt/online/qtsdkrepository/windows_x86/root/qt/
-    ```
-    
-    > Linux/macOS 可将 `windows_x86` 替换为对应平台名称，例如 `linux_x64` 或 `mac_x64`
-    
-5. 点击“添加”后继续安装，即可使用清华源加速。
-    
-
----
-
+下载的“qt-unified-windows-x64-4.5.2-online.exe”目录进入CMD，然后运行下面的命令：  ./qt-unified-windows-x64-X.X.X-online.exe --mirror https://mirror.nju.edu.cn/qt
 ## ✅ 方法二：手动下载离线安装包（如 Qt 5.15）
 
 清华镜像也提供 Qt 离线安装包，适用于没有在线安装器或不想联网安装的情况：
