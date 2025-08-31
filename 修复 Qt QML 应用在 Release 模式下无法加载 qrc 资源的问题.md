@@ -122,3 +122,156 @@ QML_FILES
 ```
 
 遵循以上步骤，即可彻底解决 Debug 正常而 Release 失败的资源加载问题，让您的应用程序在所有构建模式下都能稳定运行。
+
+
+
+---
+
+## 1️⃣ 通用原则
+
+1. **qt不能访问 QML 模块内部 RESOURCES**
+   qt自动生成的qt_add_qml_module(... RESOURCES ...)无法读取
+   
+   * Qt6 中 `qt_add_qml_module(... RESOURCES ...)` 注册的资源，仅供 QML 内部组件访问。
+   * MediaPlayer/其他非 QML 模块组件无法直接读取。
+
+3. **解决方案**
+
+   * 使用 `qt_add_resources` 全局注册 qrc 资源
+   * 将生成的资源文件加入可执行文件 `target_sources`
+   * QML 内部即可直接使用 `qrc:/path/to/file`
+
+---
+
+## 2️⃣ 通用 CMake 模板
+
+```cmake
+cmake_minimum_required(VERSION 3.16)
+
+project(MyApp VERSION 0.1 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# -------------------------
+# 查找 Qt6 模块
+# -------------------------
+find_package(Qt6 REQUIRED COMPONENTS Quick Core)
+
+qt_standard_project_setup(REQUIRES 6.8)
+
+# -------------------------
+# 可执行文件
+# -------------------------
+qt_add_executable(appMyApp
+    main.cpp
+)
+
+# -------------------------
+# 全局注册 qrc 资源（通用方案）
+# -------------------------
+# qrc 文件可包含视频、图片、音频等
+qt_add_resources(APP_RESOURCES
+    resources.qrc   # 例如包含 bg1.mp4, bg2.mp4, icon.png 等
+)
+
+# 将资源加入可执行文件
+target_sources(appMyApp PRIVATE ${APP_RESOURCES})
+
+# -------------------------
+# QML 模块（只管理 QML 文件，不注册资源）
+# -------------------------
+qt_add_qml_module(appMyApp
+    URI MyApp
+    VERSION 1.0
+    QML_FILES
+        Main.qml
+        components/Button.qml
+        components/Input.qml
+)
+
+# -------------------------
+# 平台特定设置
+# -------------------------
+set_target_properties(appMyApp PROPERTIES
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
+)
+
+# -------------------------
+# 链接 Qt 库
+# -------------------------
+target_link_libraries(appMyApp
+    PRIVATE Qt6::Quick Qt6::Core
+)
+
+# -------------------------
+# 安装规则
+# -------------------------
+include(GNUInstallDirs)
+install(TARGETS appMyApp
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+```
+
+---
+
+## 3️⃣ QML 使用示例
+
+```qml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Window
+import QtMultimedia
+
+Window {
+    id: root
+    width: 1080
+    height: 720
+    visible: true
+
+    MediaPlayer {
+        id: mediaplayer
+        source: "qrc:/videos/bg1.mp4"    // 全局注册 qrc
+        audioOutput: AudioOutput {}
+        autoPlay: true
+        loops: MediaPlayer.Infinite
+    }
+
+    VideoOutput {
+        anchors.fill: parent
+        source: mediaplayer
+        fillMode: VideoOutput.PreserveAspectCrop
+    }
+
+    Image {
+        source: "qrc:/images/icon.png"   // 图片也可以使用
+        anchors.centerIn: parent
+        width: 100
+        height: 100
+    }
+}
+```
+
+---
+
+## 4️⃣ 特点与优势
+
+* **通用**：任何资源类型（视频、图片、音频）都适用
+* **跨平台**：Windows / Linux / macOS 都可用
+* **稳定**：MediaPlayer、Image、Text 等都能读取 `qrc:/`
+* **易维护**：qrc 文件集中管理，CMake 简洁
+
+---
+
+✅ 总结
+
+* **不要用** `qt_add_qml_module(... RESOURCES ...)` 让 MediaPlayer 访问资源
+* **使用** `qt_add_resources + target_sources` 全局注册 qrc
+* QML 中直接用 `qrc:/` 路径即可
+
+---
+
